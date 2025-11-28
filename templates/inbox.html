@@ -378,7 +378,7 @@
             <ul class="navbar-nav">
                 <li><a href="{{ url_for('main.index') }}">صفحه اصلی</a></li>
                 <li><a href="{{ url_for('main.about') }}">درباره ما</a></li>
-                <li><a href="{{ url_for('main.match') }}">جستجوی کاربران</a></li>
+                <li><a href="{{ url_for('chat.match') }}">جستجوی کاربران</a></li>
                 <li><a href="{{ url_for('main.inbox') }}">صندوق پیام</a></li>
                 <li><a href="{{ url_for('main.profile', user_id=current_user.id) }}">پروفایل</a></li>
                 <li><a href="{{ url_for('main.logout') }}">خروج</a></li>
@@ -404,7 +404,7 @@
                 </h1>
                 
                 <div class="inbox-actions">
-                    <a href="{{ url_for('main.match') }}" class="action-button">
+                    <a href="{{ url_for('chat.match') }}" class="action-button">
                         <i class="material-icons">person_add</i>
                         یافتن کاربران جدید
                     </a>
@@ -456,7 +456,7 @@
                             <i class="material-icons empty-icon">chat_bubble_outline</i>
                             <h3 class="empty-title">هیچ گفتگویی ندارید</h3>
                             <p class="empty-description">برای شروع گفتگو، کاربران جدیدی را پیدا و با آن‌ها ارتباط برقرار کنید</p>
-                            <a href="{{ url_for('main.match') }}" class="action-button">
+                            <a href="{{ url_for('chat.match') }}" class="action-button">
                                 <i class="material-icons">search</i>
                                 جستجوی کاربران
                             </a>

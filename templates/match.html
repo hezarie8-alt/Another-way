@@ -464,7 +464,7 @@
             <ul class="navbar-nav">
                 <li><a href="{{ url_for('main.index') }}">صفحه اصلی</a></li>
                 <li><a href="{{ url_for('main.about') }}">درباره ما</a></li>
-                <li><a href="{{ url_for('main.match') }}">جستجوی کاربران</a></li>
+                <li><a href="{{ url_for('chat.match') }}">جستجوی کاربران</a></li>
                 <li><a href="{{ url_for('main.inbox', user_id=current_user_id) }}">صندوق پیام</a></li>
                 <li><a href="{{ url_for('main.profile', user_id=current_user_id) }}">پروفایل</a></li>
                 <li><a href="{{ url_for('main.logout') }}">خروج</a></li>
@@ -489,7 +489,7 @@
                     جستجوی کاربران
                 </h2>
                 
-                <form action="{{ url_for('main.match') }}" method="GET" class="search-form">
+                <form action="{{ url_for('chat.match') }}" method="GET" class="search-form">
                     <div class="search-input-group">
                         <i class="material-icons search-icon">search</i>
                         <input type="text" name="q" class="search-input" placeholder="جستجو بر اساس نام یا رشته تحصیلی..." value="{{ request.args.get('q', '') }}">
@@ -555,7 +555,7 @@
                         <i class="material-icons empty-icon">search_off</i>
                         <h3 class="empty-title">کاربری یافت نشد</h3>
                         <p class="empty-description">با کلمات کلیدی دیگر جستجو کنید یا فیلترها را تغییر دهید</p>
-                        <a href="{{ url_for('main.match') }}" class="action-button chat-button">
+                        <a href="{{ url_for('chat.match') }}" class="action-button chat-button">
                             <i class="material-icons">refresh</i>
                             نمایش همه کاربران
                         </a>
