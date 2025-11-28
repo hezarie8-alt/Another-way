@@ -384,7 +384,7 @@
                 <li><a href="{{ url_for('main.index') }}" class="nav-link">صفحه اصلی</a></li>
                 <li><a href="{{ url_for('main.about') }}" class="nav-link">درباره ما</a></li>
                 <li><a href="{{ url_for('chat.match') }}" class="nav-link">جستجوی کاربران</a></li>
-                <li><a href="{{ url_for('main.inbox') }}" class="nav-link">صندوق پیام</a></li>
+                <li><a href="{{ url_for('chat.inbox') }}" class="nav-link">صندوق پیام</a></li>
                 <li><a href="{{ url_for('main.profile', user_id=current_user.id) }}" class="nav-link">پروفایل</a></li>
                 <li><a href="{{ url_for('main.logout') }}" class="nav-link">خروج</a></li>
             </ul>
@@ -402,7 +402,7 @@
         <div class="chat-container">
             <!-- Chat Header -->
             <div class="chat-header">
-                <a href="{{ url_for('main.inbox') }}" class="back-button">
+                <a href="{{ url_for('chat.inbox') }}" class="back-button">
                     <i class="material-icons">arrow_forward</i>
                 </a>
                 <div class="other-user-avatar">{{ other_user.name[0] }}</div>

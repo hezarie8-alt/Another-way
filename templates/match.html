@@ -465,7 +465,7 @@
                 <li><a href="{{ url_for('main.index') }}">صفحه اصلی</a></li>
                 <li><a href="{{ url_for('main.about') }}">درباره ما</a></li>
                 <li><a href="{{ url_for('chat.match') }}">جستجوی کاربران</a></li>
-                <li><a href="{{ url_for('main.inbox', user_id=current_user_id) }}">صندوق پیام</a></li>
+                <li><a href="{{ url_for('chat.inbox', user_id=current_user_id) }}">صندوق پیام</a></li>
                 <li><a href="{{ url_for('main.profile', user_id=current_user_id) }}">پروفایل</a></li>
                 <li><a href="{{ url_for('main.logout') }}">خروج</a></li>
             </ul>
