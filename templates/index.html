@@ -545,7 +545,7 @@
             <ul class="navbar-nav">
                 <li><a href="{{ url_for('main.index') }}">صفحه اصلی</a></li>
                 <li><a href="{{ url_for('main.about') }}">درباره ما</a></li>
-                <li><a href="{{ url_for('main.show_auth_page') }}">ورود / ثبت‌نام</a></li>
+                <li><a href="{{ url_for('auth.show_auth_page') }}">ورود / ثبت‌نام</a></li>
             </ul>
         </div>
     </nav>
@@ -620,7 +620,7 @@
         <div class="container">
             <h2 class="cta-title">آماده‌اید شروع کنید؟</h2>
             <p class="cta-subtitle">همین امروز به جامعه ما بپیوندید و با همکلاسی‌های خود ارتباط برقرار کنید</p>
-            <a href="{{ url_for('main.show_auth_page') }}" class="btn btn-primary">ثبت‌نام رایگان</a>
+            <a href="{{ url_for('auth.show_auth_page') }}" class="btn btn-primary">ثبت‌نام رایگان</a>
         </div>
     </section>
     
