@@ -312,16 +312,16 @@
     <!-- Navigation -->
     <nav class="navbar">
         <div class="container">
-            <a href="{{ url_for('index') }}" class="navbar-brand">یونی نت</a>
+            <a href="{{ url_for('main.index') }}" class="navbar-brand">یونی نت</a>
             <ul class="navbar-nav">
                 {% if current_user %}
-                    <li><a href="{{ url_for('match') }}">جستجوی کاربران</a></li>
-                    <li><a href="{{ url_for('inbox', user_id=current_user.id) }}">صندوق پیام</a></li>
-                    <li><a href="{{ url_for('profile', user_id=current_user.id) }}">پروفایل</a></li>
-                    <li><a href="{{ url_for('logout') }}">خروج</a></li>
+                    <li><a href="{{ url_for('main.match') }}">جستجوی کاربران</a></li>
+                    <li><a href="{{ url_for('main.inbox', user_id=current_user.id) }}">صندوق پیام</a></li>
+                    <li><a href="{{ url_for('main.profile', user_id=current_user.id) }}">پروفایل</a></li>
+                    <li><a href="{{ url_for('main.logout') }}">خروج</a></li>
                 {% else %}
-                    <li><a href="{{ url_for('index') }}">صفحه اصلی</a></li>
-                    <li><a href="{{ url_for('about') }}">درباره ما</a></li>
+                    <li><a href="{{ url_for('main.index') }}">صفحه اصلی</a></li>
+                    <li><a href="{{ url_for('main.about') }}">درباره ما</a></li>
                     <li><a href="{{ url_for('show_auth_page') }}">ورود / ثبت‌نام</a></li>
                 {% endif %}
             </ul>
@@ -370,7 +370,7 @@
             <div class="footer-section">
                 <h3 class="footer-title">درباره ما</h3>
                 <ul class="footer-links">
-                    <li><a href="{{ url_for('about') }}">معرفی اپلیکیشن</a></li>
+                    <li><a href="{{ url_for('main.about') }}">معرفی اپلیکیشن</a></li>
                     <li><a href="#">قوانین و مقررات</a></li>
                     <li><a href="#">حریم خصوصی</a></li>
                 </ul>

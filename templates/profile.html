@@ -507,16 +507,16 @@
     <!-- Navigation -->
     <nav class="navbar">
         <div class="container">
-            <a href="{{ url_for('index') }}" class="navbar-brand">یونی نت</a>
+            <a href="{{ url_for('main.index') }}" class="navbar-brand">یونی نت</a>
             
             <ul class="navbar-nav">
-                <li><a href="{{ url_for('index') }}">صفحه اصلی</a></li>
-                <li><a href="{{ url_for('about') }}">درباره ما</a></li>
-                <li><a href="{{ url_for('match') }}">جستجوی کاربران</a></li>
+                <li><a href="{{ url_for('main.index') }}">صفحه اصلی</a></li>
+                <li><a href="{{ url_for('main.about') }}">درباره ما</a></li>
+                <li><a href="{{ url_for('main.match') }}">جستجوی کاربران</a></li>
                 {% if current_user %}
-                    <li><a href="{{ url_for('inbox') }}">صندوق پیام</a></li>
-                    <li><a href="{{ url_for('profile', user_id=current_user.id) }}">پروفایل</a></li>
-                    <li><a href="{{ url_for('logout') }}">خروج</a></li>
+                    <li><a href="{{ url_for('main.inbox') }}">صندوق پیام</a></li>
+                    <li><a href="{{ url_for('main.profile', user_id=current_user.id) }}">پروفایل</a></li>
+                    <li><a href="{{ url_for('main.logout') }}">خروج</a></li>
                 {% endif %}
             </ul>
             
@@ -589,7 +589,7 @@
                                 ویرایش اطلاعات پروفایل
                             </h2>
                             
-                            <form method="POST" action="{{ url_for('update_profile') }}">
+                            <form method="POST" action="{{ url_for('main.update_profile') }}">
                                 {{ update_profile_form.hidden_tag() }}
                                 
                                 <div class="form-group">
@@ -634,7 +634,7 @@
                                 تغییر رمز عبور
                             </h2>
                             
-                            <form method="POST" action="{{ url_for('update_password') }}">
+                            <form method="POST" action="{{ url_for('main.update_password') }}">
                                 {{ update_password_form.hidden_tag() }}
                                 
                                 <div class="form-group">
@@ -695,7 +695,7 @@
                                 </p>
                             </div>
                             
-                            <form method="POST" action="{{ url_for('delete_account') }}" onsubmit="return confirmDeleteAccount()">
+                            <form method="POST" action="{{ url_for('main.delete_account') }}" onsubmit="return confirmDeleteAccount()">
                                 {{ delete_account_form.hidden_tag() }}
                                 
                                 <div class="form-actions">
@@ -714,7 +714,7 @@
     
     <!-- Chat Button for non-owners -->
     {% if not can_edit and current_user %}
-        <a href="{{ url_for('chat', other_user_id=user.id) }}" class="chat-button">
+        <a href="{{ url_for('main.chat', other_user_id=user.id) }}" class="chat-button">
             <i class="material-icons">chat</i>
         </a>
     {% endif %}

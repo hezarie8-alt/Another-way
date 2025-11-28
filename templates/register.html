@@ -371,11 +371,11 @@
     <!-- Navigation -->
     <nav class="navbar">
         <div class="container">
-            <a href="{{ url_for('index') }}" class="navbar-brand">یونی نت</a>
+            <a href="{{ url_for('main.index') }}" class="navbar-brand">یونی نت</a>
             
             <ul class="navbar-nav">
-                <li><a href="{{ url_for('index') }}">صفحه اصلی</a></li>
-                <li><a href="{{ url_for('about') }}">درباره ما</a></li>
+                <li><a href="{{ url_for('main.index') }}">صفحه اصلی</a></li>
+                <li><a href="{{ url_for('main.about') }}">درباره ما</a></li>
                 <li><a href="{{ url_for('show_auth_page') }}">ورود / ثبت‌نام</a></li>
             </ul>
         </div>
@@ -418,7 +418,7 @@
                 <!-- Registration Form -->
                 <div id="register-tab" class="tab-content active">
                     <div class="card">
-                        <form method="POST" action="{{ url_for('register') }}">
+                        <form method="POST" action="{{ url_for('main.register') }}">
                             {{ form.hidden_tag() }}
                             
                             <div class="form-group">
@@ -471,7 +471,7 @@
                 <!-- Login Form -->
                 <div id="login-tab" class="tab-content">
                     <div class="card">
-                        <form method="POST" action="{{ url_for('login') }}">
+                        <form method="POST" action="{{ url_for('main.login') }}">
                             {{ login_form.hidden_tag() }}
                             
                             <div class="form-group">

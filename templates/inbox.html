@@ -373,15 +373,15 @@
     <!-- Navigation -->
     <nav class="navbar">
         <div class="container">
-            <a href="{{ url_for('index') }}" class="navbar-brand">یونی نت</a>
+            <a href="{{ url_for('main.index') }}" class="navbar-brand">یونی نت</a>
             
             <ul class="navbar-nav">
-                <li><a href="{{ url_for('index') }}">صفحه اصلی</a></li>
-                <li><a href="{{ url_for('about') }}">درباره ما</a></li>
-                <li><a href="{{ url_for('match') }}">جستجوی کاربران</a></li>
-                <li><a href="{{ url_for('inbox') }}">صندوق پیام</a></li>
-                <li><a href="{{ url_for('profile', user_id=current_user.id) }}">پروفایل</a></li>
-                <li><a href="{{ url_for('logout') }}">خروج</a></li>
+                <li><a href="{{ url_for('main.index') }}">صفحه اصلی</a></li>
+                <li><a href="{{ url_for('main.about') }}">درباره ما</a></li>
+                <li><a href="{{ url_for('main.match') }}">جستجوی کاربران</a></li>
+                <li><a href="{{ url_for('main.inbox') }}">صندوق پیام</a></li>
+                <li><a href="{{ url_for('main.profile', user_id=current_user.id) }}">پروفایل</a></li>
+                <li><a href="{{ url_for('main.logout') }}">خروج</a></li>
             </ul>
             
             {% if current_user %}
@@ -404,7 +404,7 @@
                 </h1>
                 
                 <div class="inbox-actions">
-                    <a href="{{ url_for('match') }}" class="action-button">
+                    <a href="{{ url_for('main.match') }}" class="action-button">
                         <i class="material-icons">person_add</i>
                         یافتن کاربران جدید
                     </a>
@@ -427,7 +427,7 @@
                 <div class="conversations-list">
                     {% if conversations %}
                         {% for conversation in conversations %}
-                            <a href="{{ url_for('chat', other_user_id=conversation.other_user_id) }}" class="conversation-item {% if conversation.has_unread %}unread{% endif %}">
+                            <a href="{{ url_for('main.chat', other_user_id=conversation.other_user_id) }}" class="conversation-item {% if conversation.has_unread %}unread{% endif %}">
                                 <div class="conversation-avatar">
                                     {{ conversation.other_user_name[0] }}
                                     {% if conversation.is_online %}
@@ -456,7 +456,7 @@
                             <i class="material-icons empty-icon">chat_bubble_outline</i>
                             <h3 class="empty-title">هیچ گفتگویی ندارید</h3>
                             <p class="empty-description">برای شروع گفتگو، کاربران جدیدی را پیدا و با آن‌ها ارتباط برقرار کنید</p>
-                            <a href="{{ url_for('match') }}" class="action-button">
+                            <a href="{{ url_for('main.match') }}" class="action-button">
                                 <i class="material-icons">search</i>
                                 جستجوی کاربران
                             </a>

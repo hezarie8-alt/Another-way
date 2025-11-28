@@ -543,8 +543,8 @@
             <a href="{{ url_for('main.index') }}" class="navbar-brand">یونی نت</a>
             
             <ul class="navbar-nav">
-                <li><a href="{{ url_for('index') }}">صفحه اصلی</a></li>
-                <li><a href="{{ url_for('about') }}">درباره ما</a></li>
+                <li><a href="{{ url_for('main.index') }}">صفحه اصلی</a></li>
+                <li><a href="{{ url_for('main.about') }}">درباره ما</a></li>
                 <li><a href="{{ url_for('show_auth_page') }}">ورود / ثبت‌نام</a></li>
             </ul>
         </div>
@@ -559,7 +559,7 @@
                     <p class="hero-subtitle">پلتفرم چت تخصصی برای دانشجویان و دانش‌آموزان جهت ارتباط، همکاری و به اشتراک گذاشتن دانش</p>
                     <div class="hero-buttons">
                         <a href="{{ url_for('show_auth_page') }}" class="btn btn-primary">شروع کنید</a>
-                        <a href="{{ url_for('about') }}" class="btn btn-outline">بیشتر بدانید</a>
+                        <a href="{{ url_for('main.about') }}" class="btn btn-outline">بیشتر بدانید</a>
                     </div>
                 </div>
                 <div class="hero-image">
@@ -630,7 +630,7 @@
             <div class="footer-section">
                 <h3 class="footer-title">درباره ما</h3>
                 <ul class="footer-links">
-                    <li><a href="{{ url_for('about') }}">معرفی اپلیکیشن</a></li>
+                    <li><a href="{{ url_for('main.about') }}">معرفی اپلیکیشن</a></li>
                     <li><a href="#">قوانین و مقررات</a></li>
                     <li><a href="#">حریم خصوصی</a></li>
                 </ul>
