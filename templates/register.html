@@ -471,7 +471,7 @@
                 <!-- Login Form -->
                 <div id="login-tab" class="tab-content">
                     <div class="card">
-                        <form method="POST" action="{{ url_for('main.login') }}">
+                        <form method="POST" action="{{ url_for('auth.login') }}">
                             {{ login_form.hidden_tag() }}
                             
                             <div class="form-group">
