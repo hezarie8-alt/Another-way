@@ -317,7 +317,7 @@
                 {% if current_user %}
                     <li><a href="{{ url_for('chat.match') }}">جستجوی کاربران</a></li>
                     <li><a href="{{ url_for('chat.inbox', user_id=current_user.id) }}">صندوق پیام</a></li>
-                    <li><a href="{{ url_for('main.profile', user_id=current_user.id) }}">پروفایل</a></li>
+                    <li><a href="{{ url_for('user.profile', user_id=current_user.id) }}">پروفایل</a></li>
                     <li><a href="{{ url_for('main.logout') }}">خروج</a></li>
                 {% else %}
                     <li><a href="{{ url_for('main.index') }}">صفحه اصلی</a></li>

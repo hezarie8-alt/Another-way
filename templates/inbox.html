@@ -380,7 +380,7 @@
                 <li><a href="{{ url_for('main.about') }}">درباره ما</a></li>
                 <li><a href="{{ url_for('chat.match') }}">جستجوی کاربران</a></li>
                 <li><a href="{{ url_for('chat.inbox') }}">صندوق پیام</a></li>
-                <li><a href="{{ url_for('main.profile', user_id=current_user.id) }}">پروفایل</a></li>
+                <li><a href="{{ url_for('user.profile', user_id=current_user.id) }}">پروفایل</a></li>
                 <li><a href="{{ url_for('main.logout') }}">خروج</a></li>
             </ul>
             
