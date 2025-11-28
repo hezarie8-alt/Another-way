@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>صندوق پیام | یونی نت</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    
+    <!-- CSS -->
+    <style>
+        :root {
+            --primary-color: #00838f;
+            --primary-light: #4fb3bf;
+            --primary-dark: #005662;
+            --secondary-color: #546e7a;
+            --text-on-primary: #ffffff;
+            --text-primary: #212121;
+            --text-secondary: #757575;
+            --background: #f5f5f5;
+            --surface: #ffffff;
+            --error: #b71c1c;
+            --warning: #f57c00;
+            --success: #2e7d32;
+            --info: #0288d1;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            background-color: var(--background);
+            color: var(--text-primary);
+            line-height: 1.6;
+            direction: rtl;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* Navigation */
+        .navbar {
+            background-color: var(--primary-color);
+            color: var(--text-on-primary);
+            padding: 1rem 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-decoration: none;
+            color: var(--text-on-primary);
+            transition: transform 0.3s ease;
+        }
+        
+        .navbar-brand:hover {
+            transform: scale(1.05);
+        }
+        
+        .navbar-nav {
+            display: flex;
+            list-style: none;
+            gap: 1rem;
+        }
+        
+        .navbar-nav a {
+            color: var(--text-on-primary);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .navbar-nav a::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 0;
+            height: 100%;
+            background-color: var(--primary-light);
+            transition: width 0.3s ease;
+            z-index: -1;
+        }
+        
+        .navbar-nav a:hover::before {
+            width: 100%;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        /* Main Content */
+        .main-content {
+            padding: 2rem 0;
+            min-height: calc(100vh - 80px);
+        }
+        
+        /* Inbox Header */
+        .inbox-header {
+            background-color: var(--surface);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .inbox-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .inbox-actions {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .action-button {
+            padding: 0.5rem 1rem;
+            background-color: var(--primary-color);
+            color: var(--text-on-primary);
+            border: none;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        
+        .action-button:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        /* Conversations List */
+        .conversations-container {
+            background-color: var(--surface);
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+        
+        .conversations-header {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .conversations-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .conversations-count {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        .conversations-list {
+            max-height: 600px;
+            overflow-y: auto;
+        }
+        
+        .conversation-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #f0f0f0;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        .conversation-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .conversation-item:hover {
+            background-color: rgba(0, 131, 143, 0.05);
+        }
+        
+        .conversation-item.unread {
+            background-color: rgba(0, 131, 143, 0.05);
+        }
+        
+        .conversation-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--primary-light);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-on-primary);
+            font-size: 1.2rem;
+            font-weight: 700;
+            flex-shrink: 0;
+            margin-left: 1rem;
+            position: relative; /* For positioning the online indicator */
+        }
+        
+        .conversation-content {
+            flex: 1;
+            overflow: hidden;
+        }
+        
+        .conversation-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.25rem;
+        }
+        
+        .conversation-name-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .conversation-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .online-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: var(--success);
+            border: 2px solid var(--surface);
+        }
+        
+        .conversation-time {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+        
+        .conversation-message {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .conversation-unread {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: var(--text-on-primary);
+            font-size: 0.75rem;
+            font-weight: 700;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 0.5rem;
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            background-color: var(--surface);
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        
+        .empty-icon {
+            font-size: 4rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+        
+        .empty-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+        
+        .empty-description {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+        
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .inbox-header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+            
+            .conversations-header {
+                flex-direction: column;
+                gap: 0.5rem;
+                text-align: center;
+            }
+            
+            .navbar .container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .navbar-nav {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="{{ url_for('index') }}" class="navbar-brand">یونی نت</a>
+            
+            <ul class="navbar-nav">
+                <li><a href="{{ url_for('index') }}">صفحه اصلی</a></li>
+                <li><a href="{{ url_for('about') }}">درباره ما</a></li>
+                <li><a href="{{ url_for('match') }}">جستجوی کاربران</a></li>
+                <li><a href="{{ url_for('inbox') }}">صندوق پیام</a></li>
+                <li><a href="{{ url_for('profile', user_id=current_user.id) }}">پروفایل</a></li>
+                <li><a href="{{ url_for('logout') }}">خروج</a></li>
+            </ul>
+            
+            {% if current_user %}
+                <div class="user-info">
+                    <span>{{ current_user.name }}</span>
+                    <i class="material-icons">account_circle</i>
+                </div>
+            {% endif %}
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Inbox Header -->
+            <div class="inbox-header">
+                <h1 class="inbox-title">
+                    <i class="material-icons">inbox</i>
+                    صندوق پیام
+                </h1>
+                
+                <div class="inbox-actions">
+                    <a href="{{ url_for('match') }}" class="action-button">
+                        <i class="material-icons">person_add</i>
+                        یافتن کاربران جدید
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Conversations List -->
+            <div class="conversations-container">
+                <div class="conversations-header">
+                    <h2 class="conversations-title">گفتگوها</h2>
+                    <div class="conversations-count">
+                        {% if conversations %}
+                            {{ conversations|length }} گفتگو
+                        {% else %}
+                            هیچ گفتگویی
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="conversations-list">
+                    {% if conversations %}
+                        {% for conversation in conversations %}
+                            <a href="{{ url_for('chat', other_user_id=conversation.other_user_id) }}" class="conversation-item {% if conversation.has_unread %}unread{% endif %}">
+                                <div class="conversation-avatar">
+                                    {{ conversation.other_user_name[0] }}
+                                    {% if conversation.is_online %}
+                                        <span class="online-indicator"></span>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="conversation-content">
+                                    <div class="conversation-header">
+                                        <div class="conversation-name-wrapper">
+                                            <div class="conversation-name">{{ conversation.other_user_name }}</div>
+                                        </div>
+                                        <div class="conversation-time">{{ conversation.last_message_timestamp.strftime('%H:%M') if conversation.last_message_timestamp else '' }}</div>
+                                    </div>
+                                    
+                                    <div class="conversation-message">{{ conversation.last_message_content }}</div>
+                                </div>
+                                
+                                {% if conversation.has_unread %}
+                                    <div class="conversation-unread">1</div>
+                                {% endif %}
+                            </a>
+                        {% endfor %}
+                    {% else %}
+                        <div class="empty-state">
+                            <i class="material-icons empty-icon">chat_bubble_outline</i>
+                            <h3 class="empty-title">هیچ گفتگویی ندارید</h3>
+                            <p class="empty-description">برای شروع گفتگو، کاربران جدیدی را پیدا و با آن‌ها ارتباط برقرار کنید</p>
+                            <a href="{{ url_for('match') }}" class="action-button">
+                                <i class="material-icons">search</i>
+                                جستجوی کاربران
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- JavaScript for animations -->
+    <script>
+        // Scroll animations
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+        
+        // Observe all elements with animation
+        document.addEventListener('DOMContentLoaded', () => {
+            const conversationItems = document.querySelectorAll('.conversation-item');
+            
+            conversationItems.forEach((item, index) => {
+                item.style.transitionDelay = `${index * 0.05}s`;
+                observer.observe(item);
+            });
+        });
+    </script>
+</body>
+</html>

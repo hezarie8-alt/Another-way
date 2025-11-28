@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>صفحه اصلی | یونی نت</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
+    <!-- CSS -->
+    <style>
+        :root {
+            --primary-color: #00838f;
+            --primary-light: #4fb3bf;
+            --primary-dark: #005662;
+            --secondary-color: #546e7a;
+            --text-on-primary: #ffffff;
+            --text-primary: #212121;
+            --text-secondary: #757575;
+            --background: #f5f5f5;
+            --surface: #ffffff;
+            --error: #b71c1c;
+            --warning: #f57c00;
+            --success: #2e7d32;
+            --info: #0288d1;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            background-color: var(--background);
+            color: var(--text-primary);
+            line-height: 1.6;
+            direction: rtl;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* Navigation */
+        .navbar {
+            background-color: var(--primary-color);
+            color: var(--text-on-primary);
+            padding: 1rem 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-decoration: none;
+            color: var(--text-on-primary);
+            transition: transform 0.3s ease;
+        }
+        
+        .navbar-brand:hover {
+            transform: scale(1.05);
+        }
+        
+        .navbar-nav {
+            display: flex;
+            list-style: none;
+            gap: 1rem;
+        }
+        
+        .navbar-nav a {
+            color: var(--text-on-primary);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .navbar-nav a::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 0;
+            height: 100%;
+            background-color: var(--primary-light);
+            transition: width 0.3s ease;
+            z-index: -1;
+        }
+        
+        .navbar-nav a:hover::before {
+            width: 100%;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: var(--text-on-primary);
+            padding: 6rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background-image: url('https://sfile.chatglm.cn/images-ppt/d75e620f4fb7.jpg');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.1;
+            z-index: 0;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            min-height: 400px;
+        }
+        
+        .hero-text {
+            flex: 1;
+            padding-left: 2rem;
+            opacity: 0;
+            transform: translateX(50px);
+            animation: fadeInRight 1s ease forwards;
+        }
+        
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease 0.3s forwards;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease 0.5s forwards;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease 0.7s forwards;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 500;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .btn::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+            z-index: -1;
+        }
+        
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .btn-primary {
+            background-color: var(--text-on-primary);
+            color: var(--primary-color);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            color: var(--text-on-primary);
+            border: 2px solid var(--text-on-primary);
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--text-on-primary);
+            color: var(--primary-color);
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .hero-image {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transform: translateX(-50px);
+            animation: fadeInLeft 1s ease forwards;
+        }
+        
+        .hero-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.5s ease;
+        }
+        
+        .hero-image:hover img {
+            transform: scale(1.03);
+        }
+        
+        /* Features Section */
+        .features {
+            padding: 5rem 0;
+            background-color: var(--surface);
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease 0.3s forwards;
+        }
+        
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease 0.5s forwards;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .feature-card {
+            background-color: var(--background);
+            border-radius: 10px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .feature-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover .feature-icon {
+            transform: scale(1.1);
+            color: var(--primary-dark);
+        }
+        
+        .feature-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+            transition: color 0.3s ease;
+        }
+        
+        .feature-card:hover .feature-title {
+            color: var(--primary-dark);
+        }
+        
+        .feature-description {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+        
+        /* CTA Section */
+        .cta {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: var(--text-on-primary);
+            padding: 5rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cta::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            animation: pulse 4s infinite;
+        }
+        
+        .cta-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease 0.3s forwards;
+        }
+        
+        .cta-subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease 0.5s forwards;
+        }
+        
+        .cta .btn {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease 0.7s forwards;
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: var(--secondary-color);
+            color: var(--text-on-primary);
+            padding: 2rem 0;
+        }
+        
+        .footer .container {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 200px;
+            margin-bottom: 1rem;
+        }
+        
+        .footer-title {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links a {
+            color: var(--text-on-primary);
+            text-decoration: none;
+            display: block;
+            padding: 0.25rem 0;
+            transition: all 0.3s ease;
+            position: relative;
+            padding-right: 0;
+        }
+        
+        .footer-links a::before {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-light);
+            transform: translateY(0);
+            transition: width 0.3s ease;
+        }
+        
+        .footer-links a:hover::before {
+            width: 100%;
+        }
+        
+        .footer-links a:hover {
+            padding-right: 10px;
+        }
+        
+        .copyright {
+            text-align: center;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(0.8);
+                opacity: 0.5;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(0.8);
+                opacity: 0.5;
+            }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .hero-text {
+                padding-left: 0;
+                margin-bottom: 2rem;
+            }
+            
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-buttons {
+                justify-content: center;
+            }
+            
+            .navbar .container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .navbar-nav {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .footer .container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="{{ url_for('index') }}" class="navbar-brand">یونی نت</a>
+            
+            <ul class="navbar-nav">
+                <li><a href="{{ url_for('index') }}">صفحه اصلی</a></li>
+                <li><a href="{{ url_for('about') }}">درباره ما</a></li>
+                <li><a href="{{ url_for('show_auth_page') }}">ورود / ثبت‌نام</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1 class="hero-title">با همکلاسی‌های خود ارتباط برقرار کنید</h1>
+                    <p class="hero-subtitle">پلتفرم چت تخصصی برای دانشجویان و دانش‌آموزان جهت ارتباط، همکاری و به اشتراک گذاشتن دانش</p>
+                    <div class="hero-buttons">
+                        <a href="{{ url_for('show_auth_page') }}" class="btn btn-primary">شروع کنید</a>
+                        <a href="{{ url_for('about') }}" class="btn btn-outline">بیشتر بدانید</a>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <img src="https://sfile.chatglm.cn/images-ppt/c8eeb1a1ee7c.jpg" alt="یونی نت آموزشی">
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <h2 class="section-title">ویژگی‌های ما</h2>
+            <p class="section-subtitle">با ابزارهای ما، ارتباط با همکلاسی‌ها و همکاران خود را آسان‌تر کنید</p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="material-icons feature-icon">search</i>
+                    <h3 class="feature-title">جستجوی همکلاسی‌ها</h3>
+                    <p class="feature-description">بر اساس رشته تحصیلی، همکلاسی‌ها و همکاران خود را پیدا کنید</p>
+                </div>
+                
+                <div class="feature-card">
+                    <i class="material-icons feature-icon">chat</i>
+                    <h3 class="feature-title">چت آنی</h3>
+                    <p class="feature-description">ارتباط فوری و بدون تأخیر با دوستان و همکاران خود</p>
+                </div>
+                
+                <div class="feature-card">
+                    <i class="material-icons feature-icon">school</i>
+                    <h3 class="feature-title">محیط آموزشی</h3>
+                    <p class="feature-description">فضایی امن برای بحث در مورد مسائل درسی و علمی</p>
+                </div>
+                
+                <div class="feature-card">
+                    <i class="material-icons feature-icon">people</i>
+                    <h3 class="feature-title">شبکه اجتماعی</h3>
+                    <p class="feature-description">ایجاد ارتباطات حرفه‌ی و اجتماعی با افراد هم‌رشته</p>
+                </div>
+                
+                <div class="feature-card">
+                    <i class="material-icons feature-icon">notifications</i>
+                    <h3 class="feature-title">اعلان‌های هوشمند</h3>
+                    <p class="feature-description">اطلاع‌رسانی فوری از پیام‌ها و فعالیت‌های مهم</p>
+                </div>
+                
+                <div class="feature-card">
+                    <i class="material-icons feature-icon">security</i>
+                    <h3 class="feature-title">امنیت بالا</h3>
+                    <p class="feature-description">محافظت از اطلاعات شخصی و حفظ حریم خصوصی کاربران</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container">
+            <h2 class="cta-title">آماده‌اید شروع کنید؟</h2>
+            <p class="cta-subtitle">همین امروز به جامعه ما بپیوندید و با همکلاسی‌های خود ارتباط برقرار کنید</p>
+            <a href="{{ url_for('show_auth_page') }}" class="btn btn-primary">ثبت‌نام رایگان</a>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-section">
+                <h3 class="footer-title">درباره ما</h3>
+                <ul class="footer-links">
+                    <li><a href="{{ url_for('about') }}">معرفی اپلیکیشن</a></li>
+                    <li><a href="#">قوانین و مقررات</a></li>
+                    <li><a href="#">حریم خصوصی</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3 class="footer-title">پشتیبانی</h3>
+                <ul class="footer-links">
+                    <li><a href="#">راهنمای استفاده</a></li>
+                    <li><a href="#">سوالات متداول</a></li>
+                    <li><a href="#">تماس با ما</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3 class="footer-title">شبکه‌های اجتماعی</h3>
+                <ul class="footer-links">
+                    <li><a href="#">تلگرام</a></li>
+                    <li><a href="#">اینستاگرام</a></li>
+                    <li><a href="#">توییتر</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>© 2023 یونی نت. تمام حقوق محفوظ است.</p>
+        </div>
+    </footer>
+    
+    <!-- JavaScript for animations -->
+    <script>
+        // Scroll animations
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+        
+        // Observe all elements with animation
+        document.addEventListener('DOMContentLoaded', () => {
+            const animatedElements = document.querySelectorAll('.feature-card, .section-title, .section-subtitle');
+            
+            animatedElements.forEach(el => {
+                observer.observe(el);
+            });
+            
+            // Add delay for feature cards
+            const featureCards = document.querySelectorAll('.feature-card');
+            featureCards.forEach((card, index) => {
+                card.style.transitionDelay = `${index * 0.1}s`;
+            });
+        });
+    </script>
+</body>
+</html>
