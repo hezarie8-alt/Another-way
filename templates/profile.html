@@ -516,7 +516,7 @@
                 {% if current_user %}
                     <li><a href="{{ url_for('chat.inbox') }}">صندوق پیام</a></li>
                     <li><a href="{{ url_for('user.profile', user_id=current_user.id) }}">پروفایل</a></li>
-                    <li><a href="{{ url_for('main.logout') }}">خروج</a></li>
+                    <li><a href="{{ url_for('auth.logout') }}">خروج</a></li>
                 {% endif %}
             </ul>
             

@@ -467,7 +467,7 @@
                 <li><a href="{{ url_for('chat.match') }}">جستجوی کاربران</a></li>
                 <li><a href="{{ url_for('chat.inbox', user_id=current_user_id) }}">صندوق پیام</a></li>
                 <li><a href="{{ url_for('user.profile', user_id=current_user_id) }}">پروفایل</a></li>
-                <li><a href="{{ url_for('main.logout') }}">خروج</a></li>
+                <li><a href="{{ url_for('auth.logout') }}">خروج</a></li>
             </ul>
             
             {% if current_user %}
