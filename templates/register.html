@@ -418,7 +418,7 @@
                 <!-- Registration Form -->
                 <div id="register-tab" class="tab-content active">
                     <div class="card">
-                        <form method="POST" action="{{ url_for('main.register') }}">
+                        <form method="POST" action="{{ url_for('auth.register') }}">
                             {{ form.hidden_tag() }}
                             
                             <div class="form-group">
