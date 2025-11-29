@@ -8,321 +8,41 @@
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
     
     <!-- CSS -->
-    <style>
-        :root {
-            --primary-color: #00838f;
-            --primary-light: #4fb3bf;
-            --primary-dark: #005662;
-            --secondary-color: #546e7a;
-            --text-on-primary: #ffffff;
-            --text-primary: #212121;
-            --text-secondary: #757575;
-            --background: #f5f5f5;
-            --surface: #ffffff;
-            --error: #b71c1c;
-            --warning: #f57c00;
-            --success: #2e7d32;
-            --info: #0288d1;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Vazirmatn', sans-serif;
-            background-color: var(--background);
-            color: var(--text-primary);
-            line-height: 1.6;
-            direction: rtl;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 15px;
-        }
-        
-        /* Navigation */
-        .navbar {
-            background-color: var(--primary-color);
-            color: var(--text-on-primary);
-            padding: 1rem 0;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-        
-        .navbar .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .navbar-brand {
-            font-size: 1.5rem;
-            font-weight: 700;
-            text-decoration: none;
-            color: var(--text-on-primary);
-        }
-        
-        .navbar-nav {
-            display: flex;
-            list-style: none;
-            gap: 1rem;
-        }
-        
-        .navbar-nav a {
-            color: var(--text-on-primary);
-            text-decoration: none;
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
-            transition: background-color 0.3s;
-        }
-        
-        .navbar-nav a:hover {
-            background-color: var(--primary-light);
-        }
-        
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        /* Flash Messages */
-        .flash-messages {
-            margin-top: 1rem;
-            margin-bottom: 1rem;
-        }
-        
-        .flash-message {
-            padding: 0.75rem 1rem;
-            margin-bottom: 0.5rem;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .flash-message.success {
-            background-color: rgba(46, 125, 50, 0.1);
-            color: var(--success);
-            border-right: 4px solid var(--success);
-        }
-        
-        .flash-message.error {
-            background-color: rgba(183, 28, 28, 0.1);
-            color: var(--error);
-            border-right: 4px solid var(--error);
-        }
-        
-        .flash-message.info {
-            background-color: rgba(2, 136, 209, 0.1);
-            color: var(--info);
-            border-right: 4px solid var(--info);
-        }
-        
-        .flash-message.warning {
-            background-color: rgba(245, 124, 0, 0.1);
-            color: var(--warning);
-            border-right: 4px solid var(--warning);
-        }
-        
-        /* Main Content */
-        .main-content {
-            min-height: calc(100vh - 140px);
-            padding: 2rem 0;
-        }
-        
-        /* Cards */
-        .card {
-            background-color: var(--surface);
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        .card-header {
-            border-bottom: 1px solid #eee;
-            padding-bottom: 1rem;
-            margin-bottom: 1rem;
-        }
-        
-        .card-title {
-            font-size: 1.25rem;
-            font-weight: 500;
-            color: var(--text-primary);
-        }
-        
-        /* Forms */
-        .form-group {
-            margin-bottom: 1rem;
-        }
-        
-        .form-label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-        }
-        
-        .form-control {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-family: inherit;
-            font-size: 1rem;
-        }
-        
-        .form-control:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(0, 131, 143, 0.2);
-        }
-        
-        .btn {
-            display: inline-block;
-            padding: 0.75rem 1.5rem;
-            background-color: var(--primary-color);
-            color: var(--text-on-primary);
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-family: inherit;
-            font-size: 1rem;
-            text-align: center;
-            text-decoration: none;
-            transition: background-color 0.3s;
-        }
-        
-        .btn:hover {
-            background-color: var(--primary-dark);
-        }
-        
-        .btn-outline {
-            background-color: transparent;
-            border: 1px solid var(--primary-color);
-            color: var(--primary-color);
-        }
-        
-        .btn-outline:hover {
-            background-color: var(--primary-color);
-            color: var(--text-on-primary);
-        }
-        
-        /* Footer */
-        .footer {
-            background-color: var(--secondary-color);
-            color: var(--text-on-primary);
-            padding: 2rem 0;
-            margin-top: 2rem;
-        }
-        
-        .footer .container {
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-        }
-        
-        .footer-section {
-            flex: 1;
-            min-width: 200px;
-            margin-bottom: 1rem;
-        }
-        
-        .footer-title {
-            font-size: 1.1rem;
-            margin-bottom: 1rem;
-            font-weight: 500;
-        }
-        
-        .footer-links {
-            list-style: none;
-        }
-        
-        .footer-links a {
-            color: var(--text-on-primary);
-            text-decoration: none;
-            display: block;
-            padding: 0.25rem 0;
-            transition: opacity 0.3s;
-        }
-        
-        .footer-links a:hover {
-            opacity: 0.8;
-        }
-        
-        .copyright {
-            text-align: center;
-            margin-top: 1.5rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid rgba(255,255,255,0.1);
-        }
-        
-        /* Responsive */
-        @media (max-width: 768px) {
-            .navbar .container {
-                flex-direction: column;
-                gap: 1rem;
-            }
-            
-            .navbar-nav {
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-            
-            .footer .container {
-                flex-direction: column;
-            }
-        }
-        
-        /* Utility Classes */
-        .text-center {
-            text-align: center;
-        }
-        
-        .mt-1 { margin-top: 0.25rem; }
-        .mt-2 { margin-top: 0.5rem; }
-        .mt-3 { margin-top: 1rem; }
-        .mt-4 { margin-top: 1.5rem; }
-        .mt-5 { margin-top: 3rem; }
-        
-        .mb-1 { margin-bottom: 0.25rem; }
-        .mb-2 { margin-bottom: 0.5rem; }
-        .mb-3 { margin-bottom: 1rem; }
-        .mb-4 { margin-bottom: 1.5rem; }
-        .mb-5 { margin-bottom: 3rem; }
-        
-        .p-1 { padding: 0.25rem; }
-        .p-2 { padding: 0.5rem; }
-        .p-3 { padding: 1rem; }
-        .p-4 { padding: 1.5rem; }
-        .p-5 { padding: 3rem; }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+    <meta name="theme-color" content="#1e3a8a">
+    
+    {% block extra_css %}{% endblock %}
 </head>
-<body>
+<body class="{% if current_user and current_user.theme == 'dark' %}dark-mode{% endif %}">
+    <!-- Background Pattern -->
+    <div class="bg-pattern"></div>
+    
+    <!-- Theme Toggle Button -->
+    {% if current_user %}
+    <button id="theme-toggle" title="تغییر تم" aria-label="تغییر تم">
+        {{ '☀️' if current_user.theme == 'dark' else '🌙' }}
+    </button>
+    {% endif %}
+
     <!-- Navigation -->
     <nav class="navbar">
         <div class="container">
             <a href="{{ url_for('main.index') }}" class="navbar-brand">یونی نت</a>
             <ul class="navbar-nav">
                 {% if current_user %}
-                    <li><a href="{{ url_for('chat.match') }}">جستجوی کاربران</a></li>
-                    <li><a href="{{ url_for('chat.inbox', user_id=current_user.id) }}">صندوق پیام</a></li>
-                    <li><a href="{{ url_for('user.profile', user_id=current_user.id) }}">پروفایل</a></li>
-                    <li><a href="{{ url_for('auth.logout') }}">خروج</a></li>
+                    <li><a href="{{ url_for('chat.match') }}" class="nav-link">جستجوی کاربران</a></li>
+                    <li><a href="{{ url_for('chat.inbox') }}" class="nav-link">صندوق پیام</a></li>
+                    <li><a href="{{ url_for('user.profile', user_id=current_user.id) }}" class="nav-link">پروفایل</a></li>
+                    <li><a href="{{ url_for('auth.logout') }}" class="nav-link">خروج</a></li>
                 {% else %}
-                    <li><a href="{{ url_for('main.index') }}">صفحه اصلی</a></li>
-                    <li><a href="{{ url_for('main.about') }}">درباره ما</a></li>
-                    <li><a href="{{ url_for('auth.show_auth_page') }}">ورود / ثبت‌نام</a></li>
+                    <li><a href="{{ url_for('main.index') }}" class="nav-link">صفحه اصلی</a></li>
+                    <li><a href="{{ url_for('main.about') }}" class="nav-link">درباره ما</a></li>
+                    <li><a href="{{ url_for('auth.show_auth_page') }}" class="nav-link">ورود / ثبت‌نام</a></li>
                 {% endif %}
             </ul>
             
@@ -396,12 +116,23 @@
         </div>
         
         <div class="copyright">
-            <p>&copy; 2023 یونی نت. تمام حقوق محفوظ است.</p>
+            <p>&copy; 2025 یونی نت. تمام حقوق محفوظ است.</p>
         </div>
     </footer>
-    
+
     <!-- JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
-    {% block scripts %}{% endblock %}
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/chat-enhanced.js') }}"></script>
+    
+    {% if current_user %}
+    <script>
+        // Global Variables
+        window.VAPID_PUBLIC_KEY = '{{ config.VAPID_PUBLIC_KEY }}';
+        window.currentUserId = {{ current_user.id }};
+    </script>
+    {% endif %}
+    
+    {% block extra_js %}{% endblock %}
 </body>
 </html>

@@ -35,3 +35,14 @@ class Config:
         ('مهندسی کامپیوتر', 'مهندسی کامپیوتر'),
         ('علوم کامپیوتر', 'علوم کامپیوتر')
     ]
+    
+    # File Upload Configuration
+    MAX_CONTENT_LENGTH = 16 * 1024 * 1024  # 16 MB max file size
+    UPLOAD_FOLDER = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'uploads')
+    ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'pdf', 'doc', 'docx', 'txt', 'zip', 'rar'}
+    
+    # VAPID Keys for Web Push (Generate new ones for production!)
+    # Generate keys: python -c "from py_vapid import Vapid; v = Vapid(); v.generate_keys(); print('Public:', v.public_key_bytes); print('Private:', v.private_key)"
+    VAPID_PUBLIC_KEY = os.environ.get('VAPID_PUBLIC_KEY', '')
+    VAPID_PRIVATE_KEY = os.environ.get('VAPID_PRIVATE_KEY', '')
+    VAPID_CLAIM_EMAIL = os.environ.get('VAPID_CLAIM_EMAIL', 'mailto:admin@example.com')

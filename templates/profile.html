@@ -1,747 +1,366 @@
-<!DOCTYPE html>
-<html lang="fa" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>پروفایل کاربری | یونی نت</title>
+{% extends "base.html" %}
+
+{% block title %}پروفایل کاربری | یونی نت{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Profile Header */
+    .profile-header {
+        background-color: var(--surface-color);
+        border-radius: 16px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: var(--shadow-md);
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+    }
     
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    .profile-avatar {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        background: var(--gradient-primary);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: var(--text-on-primary);
+        font-size: 3rem;
+        font-weight: 700;
+        flex-shrink: 0;
+        box-shadow: var(--shadow-md);
+        transition: all 0.3s ease;
+    }
     
-    <!-- CSS -->
-    <style>
-        :root {
-            --primary-color: #00838f;
-            --primary-light: #4fb3bf;
-            --primary-dark: #005662;
-            --secondary-color: #546e7a;
-            --text-on-primary: #ffffff;
-            --text-primary: #212121;
-            --text-secondary: #757575;
-            --background: #f5f5f5;
-            --surface: #ffffff;
-            --error: #b71c1c;
-            --warning: #f57c00;
-            --success: #2e7d32;
-            --info: #0288d1;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Vazirmatn', sans-serif;
-            background-color: var(--background);
-            color: var(--text-primary);
-            line-height: 1.6;
-            direction: rtl;
-            overflow-x: hidden;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 15px;
-        }
-        
-        /* Navigation */
-        .navbar {
-            background-color: var(--primary-color);
-            color: var(--text-on-primary);
-            padding: 1rem 0;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            transition: all 0.3s ease;
-        }
-        
-        .navbar .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .navbar-brand {
-            font-size: 1.5rem;
-            font-weight: 700;
-            text-decoration: none;
-            color: var(--text-on-primary);
-            transition: transform 0.3s ease;
-        }
-        
-        .navbar-brand:hover {
-            transform: scale(1.05);
-        }
-        
-        .navbar-nav {
-            display: flex;
-            list-style: none;
-            gap: 1rem;
-        }
-        
-        .navbar-nav a {
-            color: var(--text-on-primary);
-            text-decoration: none;
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .navbar-nav a::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 0;
-            height: 100%;
-            background-color: var(--primary-light);
-            transition: width 0.3s ease;
-            z-index: -1;
-        }
-        
-        .navbar-nav a:hover::before {
-            width: 100%;
-        }
-        
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        /* Main Content */
-        .main-content {
-            padding: 2rem 0;
-            min-height: calc(100vh - 80px);
-        }
-        
-        /* Profile Header */
+    .profile-avatar:hover {
+        transform: scale(1.05);
+    }
+    
+    .profile-name {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--text-primary);
+    }
+    
+    .profile-details {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+        margin-top: 1rem;
+    }
+    
+    .profile-detail {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--text-secondary);
+    }
+    
+    .profile-detail i {
+        color: var(--persian-turquoise);
+    }
+    
+    /* Tabs */
+    .tabs-container {
+        background-color: var(--surface-color);
+        border-radius: 16px;
+        box-shadow: var(--shadow-md);
+        overflow: hidden;
+    }
+    
+    .tabs-header {
+        display: flex;
+        border-bottom: 1px solid var(--border-color);
+    }
+    
+    .tab-button {
+        flex: 1;
+        padding: 1rem;
+        background: none;
+        border: none;
+        font-size: 1rem;
+        font-weight: 500;
+        color: var(--text-secondary);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+    
+    .tab-button.active {
+        color: var(--persian-turquoise);
+        border-bottom: 3px solid var(--persian-turquoise);
+    }
+    
+    .tab-content {
+        padding: 2rem;
+        display: none;
+    }
+    
+    .tab-content.active {
+        display: block;
+    }
+    
+    /* Message Box */
+    .message-box {
+        background-color: rgba(6, 182, 212, 0.1);
+        border-right: 4px solid var(--persian-turquoise);
+        padding: 1.5rem;
+        border-radius: 8px;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+    
+    .message-box i {
+        color: var(--persian-turquoise);
+        font-size: 2rem;
+    }
+    
+    /* Warning Box */
+    .warning-box {
+        background-color: rgba(245, 124, 0, 0.1);
+        border-right: 4px solid var(--persian-saffron);
+        padding: 1.5rem;
+        border-radius: 8px;
+        margin-bottom: 1.5rem;
+    }
+    
+    .warning-title {
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: var(--persian-saffron);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    /* Chat Button */
+    .chat-button {
+        position: fixed;
+        bottom: 20px;
+        left: 20px;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: var(--gradient-primary);
+        color: var(--text-on-primary);
+        border: none;
+        box-shadow: var(--shadow-lg);
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: all 0.3s ease;
+        z-index: 1000;
+        text-decoration: none;
+    }
+    
+    .chat-button:hover {
+        transform: scale(1.1);
+    }
+    
+    @media (max-width: 768px) {
         .profile-header {
-            background-color: var(--surface);
-            border-radius: 10px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            display: flex;
-            align-items: center;
-            gap: 2rem;
-        }
-        
-        .profile-avatar {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            background-color: var(--primary-light);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: var(--text-on-primary);
-            font-size: 3rem;
-            font-weight: 700;
-            flex-shrink: 0;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-        }
-        
-        .profile-avatar:hover {
-            transform: scale(1.05);
-            background-color: var(--primary-color);
-        }
-        
-        .profile-info {
-            flex: 1;
-        }
-        
-        .profile-name {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            color: var(--text-primary);
+            flex-direction: column;
+            text-align: center;
         }
         
         .profile-details {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1.5rem;
-            margin-top: 1rem;
-        }
-        
-        .profile-detail {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: var(--text-secondary);
-        }
-        
-        .profile-detail i {
-            color: var(--primary-color);
-        }
-        
-        /* Tabs */
-        .tabs-container {
-            background-color: var(--surface);
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            overflow: hidden;
+            justify-content: center;
         }
         
         .tabs-header {
-            display: flex;
-            border-bottom: 1px solid #e0e0e0;
-        }
-        
-        .tab-button {
-            flex: 1;
-            padding: 1rem;
-            background: none;
-            border: none;
-            font-size: 1rem;
-            font-weight: 500;
-            color: var(--text-secondary);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-        
-        .tab-button:hover {
-            background-color: rgba(0, 131, 143, 0.05);
+            flex-direction: column;
         }
         
         .tab-button.active {
-            color: var(--primary-color);
-            border-bottom: 3px solid var(--primary-color);
+            border-right: none;
+            border-bottom: 3px solid var(--persian-turquoise);
         }
-        
-        .tab-content {
-            padding: 2rem;
-            display: none;
-        }
-        
-        .tab-content.active {
-            display: block;
-        }
-        
-        /* Forms */
-        .form-section {
-            margin-bottom: 2rem;
-        }
-        
-        .form-section:last-child {
-            margin-bottom: 0;
-        }
-        
-        .section-title {
-            font-size: 1.3rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-            color: var(--text-primary);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-        
-        .form-label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            color: var(--text-primary);
-        }
-        
-        .form-control {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #e0e0e0;
-            border-radius: 4px;
-            font-family: inherit;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-        
-        .form-control:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(0, 131, 143, 0.1);
-        }
-        
-        .form-select {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #e0e0e0;
-            border-radius: 4px;
-            font-family: inherit;
-            font-size: 1rem;
-            background-color: white;
-            cursor: pointer;
-        }
-        
-        .form-select:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(0, 131, 143, 0.1);
-        }
-        
-        .form-actions {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1.5rem;
-        }
-        
-        .btn {
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 4px;
-            font-family: inherit;
-            font-size: 1rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-        
-        .btn-primary {
-            background-color: var(--primary-color);
-            color: var(--text-on-primary);
-        }
-        
-        .btn-primary:hover {
-            background-color: var(--primary-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-        
-        .btn-danger {
-            background-color: var(--error);
-            color: var(--text-on-primary);
-        }
-        
-        .btn-danger:hover {
-            background-color: #d32f2f;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-        
-        .btn-outline {
-            background-color: transparent;
-            border: 1px solid var(--primary-color);
-            color: var(--primary-color);
-        }
-        
-        .btn-outline:hover {
-            background-color: var(--primary-color);
-            color: var(--text-on-primary);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-        
-        /* Alert */
-        .alert {
-            padding: 1rem;
-            border-radius: 4px;
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .alert-success {
-            background-color: rgba(46, 125, 50, 0.1);
-            color: var(--success);
-            border-right: 4px solid var(--success);
-        }
-        
-        .alert-error {
-            background-color: rgba(183, 28, 28, 0.1);
-            color: var(--error);
-            border-right: 4px solid var(--error);
-        }
-        
-        .alert-info {
-            background-color: rgba(2, 136, 209, 0.1);
-            color: var(--info);
-            border-right: 4px solid var(--info);
-        }
-        
-        /* Warning Box */
-        .warning-box {
-            background-color: rgba(245, 124, 0, 0.1);
-            border-right: 4px solid var(--warning);
-            padding: 1.5rem;
-            border-radius: 4px;
-            margin-bottom: 1.5rem;
-        }
-        
-        .warning-title {
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: var(--warning);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .warning-text {
-            color: var(--text-secondary);
-        }
-        
-        /* Error Messages */
-        .error-message {
-            color: var(--error);
-            font-size: 0.875rem;
-            margin-top: 0.25rem;
-        }
-        
-        /* Message Box */
-        .message-box {
-            background-color: rgba(2, 136, 209, 0.1);
-            border-right: 4px solid var(--info);
-            padding: 1.5rem;
-            border-radius: 4px;
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-        
-        .message-box i {
-            color: var(--info);
-            font-size: 2rem;
-        }
-        
-        .message-content {
-            flex: 1;
-        }
-        
-        .message-title {
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: var(--info);
-        }
-        
-        .message-text {
-            color: var(--text-secondary);
-        }
-        
-        /* Chat Button */
-        .chat-button {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background-color: var(--primary-color);
-            color: var(--text-on-primary);
-            border: none;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: all 0.3s ease;
-            z-index: 1000;
-        }
-        
-        .chat-button:hover {
-            background-color: var(--primary-dark);
-            transform: scale(1.1);
-        }
-        
-        /* Responsive */
-        @media (max-width: 768px) {
-            .profile-header {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            .profile-details {
-                justify-content: center;
-            }
-            
-            .tabs-header {
-                flex-direction: column;
-            }
-            
-            .tab-button {
-                border-bottom: 1px solid #e0e0e0;
-            }
-            
-            .tab-button.active {
-                border-right: none;
-                border-bottom: 3px solid var(--primary-color);
-            }
-            
-            .form-actions {
-                flex-direction: column;
-            }
-            
-            .navbar .container {
-                flex-direction: column;
-                gap: 1rem;
-            }
-            
-            .navbar-nav {
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-        }
-    </style>
-</head>
-<body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="container">
-            <a href="{{ url_for('main.index') }}" class="navbar-brand">یونی نت</a>
-            
-            <ul class="navbar-nav">
-                <li><a href="{{ url_for('main.index') }}">صفحه اصلی</a></li>
-                <li><a href="{{ url_for('main.about') }}">درباره ما</a></li>
-                <li><a href="{{ url_for('chat.match') }}">جستجوی کاربران</a></li>
-                {% if current_user %}
-                    <li><a href="{{ url_for('chat.inbox') }}">صندوق پیام</a></li>
-                    <li><a href="{{ url_for('user.profile', user_id=current_user.id) }}">پروفایل</a></li>
-                    <li><a href="{{ url_for('auth.logout') }}">خروج</a></li>
-                {% endif %}
-            </ul>
-            
-            {% if current_user %}
-                <div class="user-info">
-                    <span>{{ current_user.name }}</span>
-                    <i class="material-icons">account_circle</i>
-                </div>
-            {% endif %}
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Profile Header -->
+<div class="profile-header">
+    <div class="profile-avatar">{{ user.name[0] }}</div>
+    <div class="profile-info">
+        <h1 class="profile-name">{{ user.name }}</h1>
+        <div class="profile-details">
+            <div class="profile-detail">
+                <i class="material-icons">school</i>
+                <span>{{ user.major }}</span>
+            </div>
+            <div class="profile-detail">
+                <i class="material-icons">calendar_today</i>
+                <span>عضو از {{ user.created_at.strftime('%Y/%m/%d') if user.created_at else 'نامشخص' }}</span>
+            </div>
         </div>
-    </nav>
-    
-    <!-- Main Content -->
-    <main class="main-content">
-        <div class="container">
-            <!-- Profile Header -->
-            <div class="profile-header">
-                <div class="profile-avatar">{{ user.name[0] }}</div>
-                <div class="profile-info">
-                    <h1 class="profile-name">{{ user.name }}</h1>
-                    <div class="profile-details">
-                        <div class="profile-detail">
-                            <i class="material-icons">school</i>
-                            <span>{{ user.major }}</span>
-                        </div>
-                        <div class="profile-detail">
-                            <i class="material-icons">calendar_today</i>
-                            <span>عضو از {{ user.created_at.strftime('%Y/%m/%d') if user.created_at else 'نامشخص' }}</span>
-                        </div>
-                    </div>
+    </div>
+</div>
+
+<!-- Message for non-owners -->
+{% if not can_edit %}
+    <div class="message-box">
+        <i class="material-icons">info</i>
+        <div class="message-content">
+            <div style="font-weight: 600; margin-bottom: 0.5rem; color: var(--persian-turquoise);">پروفایل کاربر دیگر</div>
+            <p style="color: var(--text-secondary);">
+                شما در حال مشاهده پروفایل {{ user.name }} هستید. برای ارسال پیام به این کاربر، می‌توانید از دکمه چت در پایین صفحه استفاده کنید.
+            </p>
+        </div>
+    </div>
+{% endif %}
+
+<!-- Tabs Container -->
+{% if can_edit %}
+    <div class="tabs-container">
+        <div class="tabs-header">
+            <button class="tab-button active" onclick="switchTab('profile-info')">
+                <i class="material-icons">person</i>
+                اطلاعات پروفایل
+            </button>
+            <button class="tab-button" onclick="switchTab('password')">
+                <i class="material-icons">lock</i>
+                تغییر رمز عبور
+            </button>
+            <button class="tab-button" onclick="switchTab('account')">
+                <i class="material-icons">settings</i>
+                تنظیمات حساب
+            </button>
+        </div>
+        
+        <!-- Profile Info Tab -->
+        <div id="profile-info" class="tab-content active">
+            <h2 style="font-size: 1.3rem; font-weight: 600; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                <i class="material-icons">edit</i>
+                ویرایش اطلاعات پروفایل
+            </h2>
+            
+            <form method="POST" action="{{ url_for('user.update_profile') }}">
+                {{ update_profile_form.hidden_tag() }}
+                
+                <div class="form-group">
+                    {{ update_profile_form.name.label(class="form-label") }}
+                    {{ update_profile_form.name(class="form-control") }}
+                    {% if update_profile_form.name.errors %}
+                        {% for error in update_profile_form.name.errors %}
+                            <div class="error-message">{{ error }}</div>
+                        {% endfor %}
+                    {% endif %}
                 </div>
+                
+                <div class="form-group">
+                    {{ update_profile_form.major.label(class="form-label") }}
+                    {{ update_profile_form.major(class="form-select") }}
+                    {% if update_profile_form.major.errors %}
+                        {% for error in update_profile_form.major.errors %}
+                            <div class="error-message">{{ error }}</div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                
+                <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="material-icons">save</i>
+                        ذخیره تغییرات
+                    </button>
+                </div>
+            </form>
+        </div>
+        
+        <!-- Password Tab -->
+        <div id="password" class="tab-content">
+            <h2 style="font-size: 1.3rem; font-weight: 600; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                <i class="material-icons">lock</i>
+                تغییر رمز عبور
+            </h2>
+            
+            <form method="POST" action="{{ url_for('user.update_password') }}">
+                {{ update_password_form.hidden_tag() }}
+                
+                <div class="form-group">
+                    {{ update_password_form.current_password.label(class="form-label") }}
+                    {{ update_password_form.current_password(class="form-control", type="password") }}
+                </div>
+                
+                <div class="form-group">
+                    {{ update_password_form.new_password.label(class="form-label") }}
+                    {{ update_password_form.new_password(class="form-control", type="password") }}
+                </div>
+                
+                <div class="form-group">
+                    {{ update_password_form.confirm_new_password.label(class="form-label") }}
+                    {{ update_password_form.confirm_new_password(class="form-control", type="password") }}
+                </div>
+                
+                <button type="submit" class="btn btn-primary">
+                    <i class="material-icons">lock</i>
+                    تغییر رمز عبور
+                </button>
+            </form>
+        </div>
+        
+        <!-- Account Tab -->
+        <div id="account" class="tab-content">
+            <h2 style="font-size: 1.3rem; font-weight: 600; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                <i class="material-icons">warning</i>
+                تنظیمات حساس حساب
+            </h2>
+            
+            <div class="warning-box">
+                <div class="warning-title">
+                    <i class="material-icons">warning</i>
+                    هشدار حذف حساب کاربری
+                </div>
+                <p style="color: var(--text-secondary);">
+                    با حذف حساب کاربری خود، تمام اطلاعات، پیام‌ها و داده‌های شما به طور کامل از سیستم حذف خواهند شد و این عمل غیرقابل بازگشت است.
+                </p>
             </div>
             
-            <!-- Message for non-owners -->
-            {% if not can_edit %}
-                <div class="message-box">
-                    <i class="material-icons">info</i>
-                    <div class="message-content">
-                        <div class="message-title">پروفایل کاربر دیگر</div>
-                        <p class="message-text">
-                            شما در حال مشاهده پروفایل {{ user.name }} هستید. برای ارسال پیام به این کاربر، می‌توانید از دکمه چت در پایین صفحه استفاده کنید.
-                        </p>
-                    </div>
-                </div>
-            {% endif %}
-            
-            <!-- Tabs Container -->
-            {% if can_edit %}
-                <div class="tabs-container">
-                    <div class="tabs-header">
-                        <button class="tab-button active" onclick="switchTab('profile-info')">
-                            <i class="material-icons">person</i>
-                            اطلاعات پروفایل
-                        </button>
-                        <button class="tab-button" onclick="switchTab('password')">
-                            <i class="material-icons">lock</i>
-                            تغییر رمز عبور
-                        </button>
-                        <button class="tab-button" onclick="switchTab('account')">
-                            <i class="material-icons">settings</i>
-                            تنظیمات حساب
-                        </button>
-                    </div>
-                    
-                    <!-- Profile Info Tab -->
-                    <div id="profile-info" class="tab-content active">
-                        <div class="form-section">
-                            <h2 class="section-title">
-                                <i class="material-icons">edit</i>
-                                ویرایش اطلاعات پروفایل
-                            </h2>
-                            
-                            <form method="POST" action="{{ url_for('user.update_profile') }}">
-                                {{ update_profile_form.hidden_tag() }}
-                                
-                                <div class="form-group">
-                                    {{ update_profile_form.name.label(class="form-label") }}
-                                    {{ update_profile_form.name(class="form-control") }}
-                                    {% if update_profile_form.name.errors %}
-                                        {% for error in update_profile_form.name.errors %}
-                                            <div class="error-message">{{ error }}</div>
-                                        {% endfor %}
-                                    {% endif %}
-                                </div>
-                                
-                                <div class="form-group">
-                                    {{ update_profile_form.major.label(class="form-label") }}
-                                    {{ update_profile_form.major(class="form-select") }}
-                                    {% if update_profile_form.major.errors %}
-                                        {% for error in update_profile_form.major.errors %}
-                                            <div class="error-message">{{ error }}</div>
-                                        {% endfor %}
-                                    {% endif %}
-                                </div>
-                                
-                                <div class="form-actions">
-                                    <button type="submit" class="btn btn-primary">
-                                        <i class="material-icons">save</i>
-                                        ذخیره تغییرات
-                                    </button>
-                                    <button type="reset" class="btn btn-outline">
-                                        <i class="material-icons">refresh</i>
-                                        بازنشانی
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                    
-                    <!-- Password Tab -->
-                    <div id="password" class="tab-content">
-                        <div class="form-section">
-                            <h2 class="section-title">
-                                <i class="material-icons">lock</i>
-                                تغییر رمز عبور
-                            </h2>
-                            
-                            <form method="POST" action="{{ url_for('user.update_password') }}">
-                                {{ update_password_form.hidden_tag() }}
-                                
-                                <div class="form-group">
-                                    {{ update_password_form.current_password.label(class="form-label") }}
-                                    {{ update_password_form.current_password(class="form-control", type="password") }}
-                                    {% if update_password_form.current_password.errors %}
-                                        {% for error in update_password_form.current_password.errors %}
-                                            <div class="error-message">{{ error }}</div>
-                                        {% endfor %}
-                                    {% endif %}
-                                </div>
-                                
-                                <div class="form-group">
-                                    {{ update_password_form.new_password.label(class="form-label") }}
-                                    {{ update_password_form.new_password(class="form-control", type="password") }}
-                                    {% if update_password_form.new_password.errors %}
-                                        {% for error in update_password_form.new_password.errors %}
-                                            <div class="error-message">{{ error }}</div>
-                                        {% endfor %}
-                                    {% endif %}
-                                </div>
-                                
-                                <div class="form-group">
-                                    {{ update_password_form.confirm_new_password.label(class="form-label") }}
-                                    {{ update_password_form.confirm_new_password(class="form-control", type="password") }}
-                                    {% if update_password_form.confirm_new_password.errors %}
-                                        {% for error in update_password_form.confirm_new_password.errors %}
-                                            <div class="error-message">{{ error }}</div>
-                                        {% endfor %}
-                                    {% endif %}
-                                </div>
-                                
-                                <div class="form-actions">
-                                    <button type="submit" class="btn btn-primary">
-                                        <i class="material-icons">lock</i>
-                                        تغییر رمز عبور
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                    
-                    <!-- Account Tab -->
-                    <div id="account" class="tab-content">
-                        <div class="form-section">
-                            <h2 class="section-title">
-                                <i class="material-icons">warning</i>
-                                تنظیمات حساس حساب
-                            </h2>
-                            
-                            <div class="warning-box">
-                                <div class="warning-title">
-                                    <i class="material-icons">warning</i>
-                                    هشدار حذف حساب کاربری
-                                </div>
-                                <p class="warning-text">
-                                    با حذف حساب کاربری خود، تمام اطلاعات، پیام‌ها و داده‌های شما به طور کامل از سیستم حذف خواهند شد و این عمل غیرقابل بازگشت است. لطفاً با احتیاط این کار را انجام دهید.
-                                </p>
-                            </div>
-                            
-                            <form method="POST" action="{{ url_for('user.delete_account') }}" onsubmit="return confirmDeleteAccount()">
-                                {{ delete_account_form.hidden_tag() }}
-                                
-                                <div class="form-actions">
-                                    <button type="submit" class="btn btn-danger">
-                                        <i class="material-icons">delete_forever</i>
-                                        حذف حساب کاربری
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            {% endif %}
+            <form method="POST" action="{{ url_for('user.delete_account') }}" onsubmit="return confirm('آیا از حذف حساب کاربری خود اطمینان دارید؟ این عمل غیرقابل بازگشت است.')">
+                {{ delete_account_form.hidden_tag() }}
+                
+                <button type="submit" class="btn btn-danger">
+                    <i class="material-icons">delete_forever</i>
+                    حذف حساب کاربری
+                </button>
+            </form>
         </div>
-    </main>
-    
-    <!-- Chat Button for non-owners -->
-    {% if not can_edit and current_user %}
-        <a href="{{ url_for('main.chat', other_user_id=user.id) }}" class="chat-button">
-            <i class="material-icons">chat</i>
-        </a>
-    {% endif %}
-    
-    <!-- JavaScript -->
-    <script>
-        function switchTab(tabName) {
-            // Hide all tabs
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            
-            // Remove active class from all tab buttons
-            document.querySelectorAll('.tab-button').forEach(button => {
-                button.classList.remove('active');
-            });
-            
-            // Show selected tab
-            document.getElementById(tabName).classList.add('active');
-            
-            // Add active class to clicked tab button
-            event.target.closest('.tab-button').classList.add('active');
-        }
+    </div>
+{% endif %}
+
+<!-- Chat Button for non-owners -->
+{% if not can_edit and current_user %}
+    <a href="{{ url_for('chat.chat', other_user_id=user.id) }}" class="chat-button">
+        <i class="material-icons">chat</i>
+    </a>
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function switchTab(tabName) {
+        // Hide all tabs
+        document.querySelectorAll('.tab-content').forEach(tab => {
+            tab.classList.remove('active');
+        });
         
-        function confirmDeleteAccount() {
-            return confirm('آیا از حذف حساب کاربری خود اطمینان دارید؟ این عمل غیرقابل بازگشت است.');
-        }
-    </script>
-</body>
-</html>
+        // Remove active class from all tab buttons
+        document.querySelectorAll('.tab-button').forEach(button => {
+            button.classList.remove('active');
+        });
+        
+        // Show selected tab
+        document.getElementById(tabName).classList.add('active');
+        
+        // Add active class to clicked tab button
+        event.target.closest('.tab-button').classList.add('active');
+    }
+</script>
+{% endblock %}

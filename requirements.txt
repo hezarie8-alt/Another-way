@@ -11,3 +11,5 @@ psycopg2-binary==2.9.9
 python-socketio==5.10.0
 python-engineio==4.8.0
 gunicorn==21.2.0
+Pillow==10.1.0
+pywebpush==1.14.0

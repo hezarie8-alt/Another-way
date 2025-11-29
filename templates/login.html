@@ -1,122 +1,97 @@
 {% extends "base.html" %}
 
-{% block title %}🔐 همکلاسی یاب | ورود{% endblock %}
+{% block title %}ورود | یونی نت{% endblock %}
 
-{% block content %}
-<div class="container my-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6 col-lg-5">
-            <div class="card-custom login-card p-4 p-md-5">
-                <div class="text-center mb-4">
-                    <div class="login-icon mb-3">
-                        <i class="bi bi-person-circle"></i>
-                    </div>
-                    <h2 class="fw-bold">ورود به حساب کاربری</h2>
-                    <p class="text-muted">برای ورود، اطلاعات خود را وارد کنید</p>
-                </div>
-                
-                <!-- Flash Messages Block -->
-                {% with messages = get_flashed_messages(with_categories=true) %}
-                  {% if messages %}
-                    {% for category, message in messages %}
-                      <div class="alert alert-custom alert-custom-{{ 'success' if category == 'success' else 'error' if category == 'error' else 'info' }} alert-dismissible fade show" role="alert">
-                        {{ message }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                      </div>
-                    {% endfor %}
-                  {% endif %}
-                {% endwith %}
-                
-                <!-- Login Form -->
-                <form method="POST" id="loginForm" novalidate>
-                    {{ form.hidden_tag() }} <!-- CSRF Token -->
-
-                    <div class="mb-4">
-                        <label for="username" class="form-label fw-semibold">
-                            <i class="bi bi-person ms-2"></i>نام کاربری
-                        </label>
-                        {{ form.username(class="form-control form-control-custom" + (" is-invalid" if form.username.errors else ""), placeholder="نام کاربری خود را وارد کنید") }}
-                        {% for error in form.username.errors %}
-                            <div class="invalid-feedback">{{ error }}</div>
-                        {% endfor %}
-                    </div>
-                    
-                    <div class="mb-4">
-                        <label for="password" class="form-label fw-semibold">
-                            <i class="bi bi-lock ms-2"></i>رمز عبور
-                        </label>
-                        <div class="input-group">
-                            {{ form.password(class="form-control form-control-custom password-input" + (" is-invalid" if form.password.errors else ""), placeholder="رمز عبور خود را وارد کنید") }}
-                            <button class="btn btn-outline-secondary password-toggle" type="button" id="passwordToggle">
-                                <i class="bi bi-eye-slash"></i>
-                            </button>
-                        </div>
-                        {% for error in form.password.errors %}
-                            <div class="invalid-feedback">{{ error }}</div>
-                        {% endfor %}
-                    </div>
-
-                    <div class="d-flex justify-content-between align-items-center mb-4">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="rememberMe">
-                            <label class="form-check-label" for="rememberMe">
-                                مرا به خاطر بسپار
-                            </label>
-                        </div>
-                        <a href="#" class="text-decoration-none">رمز عبور را فراموش کرده‌ام؟</a>
-                    </div>
-                    
-                    <div class="d-grid">
-                        {{ form.submit(class="btn btn-custom-primary btn-lg") }}
-                    </div>
-                </form>
-
-                <div class="divider my-4">
-                    <span>یا</span>
-                </div>
-
-                <div class="text-center">
-                    <p class="mb-0">حساب کاربری ندارید؟</p>
-                    <a href="{{ url_for('auth.show_auth_page') }}" class="btn btn-custom-secondary mt-2">
-                        <i class="bi bi-person-plus ms-2"></i>ثبت‌نام کنید
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
+{% block extra_css %}
 <style>
+    .login-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: calc(100vh - 200px);
+        padding: 2rem 1rem;
+    }
+    
     .login-card {
         max-width: 450px;
-        margin: 0 auto;
+        width: 100%;
+        background-color: var(--surface-color);
+        border-radius: 16px;
+        padding: 2.5rem;
+        box-shadow: var(--shadow-lg);
+    }
+    
+    .login-header {
+        text-align: center;
+        margin-bottom: 2rem;
     }
     
     .login-icon {
         width: 80px;
         height: 80px;
         border-radius: 50%;
-        background-color: rgba(14, 165, 233, 0.1);
+        background: var(--gradient-primary);
         display: flex;
         align-items: center;
         justify-content: center;
-        margin: 0 auto;
+        margin: 0 auto 1rem;
         font-size: 2.5rem;
-        color: var(--primary-color);
+        color: var(--text-on-primary);
     }
     
-    .password-input {
-        border-left: none !important;
+    .login-title {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+    }
+    
+    .login-subtitle {
+        color: var(--text-secondary);
+    }
+    
+    .password-input-group {
+        position: relative;
     }
     
     .password-toggle {
-        border-right: none;
-        background-color: var(--light-bg);
-        border-color: var(--border-color);
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: var(--text-secondary);
+        cursor: pointer;
+        padding: 0.5rem;
+        transition: color 0.3s ease;
     }
     
     .password-toggle:hover {
-        background-color: var(--border-color);
+        color: var(--persian-turquoise);
+    }
+    
+    .remember-forgot {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+    }
+    
+    .form-check-input:checked {
+        background-color: var(--persian-turquoise);
+        border-color: var(--persian-turquoise);
+    }
+    
+    .forgot-link {
+        color: var(--persian-turquoise);
+        text-decoration: none;
+        font-size: 0.9rem;
+    }
+    
+    .forgot-link:hover {
+        text-decoration: underline;
     }
     
     .divider {
@@ -136,31 +111,108 @@
     }
     
     .divider span {
-        background-color: var(--white);
+        background-color: var(--surface-color);
         padding: 0 1rem;
-        color: var(--text-light);
+        color: var(--text-secondary);
         position: relative;
         z-index: 1;
     }
     
-    .form-check-input:checked {
-        background-color: var(--primary-color);
-        border-color: var(--primary-color);
+    .signup-link {
+        text-align: center;
+        margin-top: 1rem;
     }
     
-    /* Animation for form elements */
-    .login-card > * {
-        animation: fadeIn 0.5s ease-out;
+    .signup-link a {
+        color: var(--persian-turquoise);
+        text-decoration: none;
+        font-weight: 500;
     }
     
-    .login-card > *:nth-child(1) { animation-delay: 0.1s; }
-    .login-card > *:nth-child(2) { animation-delay: 0.2s; }
-    .login-card > *:nth-child(3) { animation-delay: 0.3s; }
-    .login-card > *:nth-child(4) { animation-delay: 0.4s; }
-    .login-card > *:nth-child(5) { animation-delay: 0.5s; }
+    .signup-link a:hover {
+        text-decoration: underline;
+    }
 </style>
+{% endblock %}
 
-{% block scripts %}
+{% block content %}
+<div class="login-container">
+    <div class="login-card">
+        <div class="login-header">
+            <div class="login-icon">
+                <i class="material-icons">person</i>
+            </div>
+            <h2 class="login-title">ورود به حساب کاربری</h2>
+            <p class="login-subtitle">برای ورود، اطلاعات خود را وارد کنید</p>
+        </div>
+        
+        <!-- Login Form -->
+        <form method="POST" id="loginForm" action="{{ url_for('auth.login') }}">
+            {{ form.hidden_tag() }}
+
+            <div class="form-group">
+                <label for="username" class="form-label">
+                    <i class="material-icons" style="font-size: 1rem; vertical-align: middle;">person</i>
+                    نام کاربری
+                </label>
+                {{ form.username(class="form-control", placeholder="نام کاربری خود را وارد کنید", id="username") }}
+                {% if form.username.errors %}
+                    {% for error in form.username.errors %}
+                        <div class="error-message">{{ error }}</div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label for="password" class="form-label">
+                    <i class="material-icons" style="font-size: 1rem; vertical-align: middle;">lock</i>
+                    رمز عبور
+                </label>
+                <div class="password-input-group">
+                    {{ form.password(class="form-control", placeholder="رمز عبور خود را وارد کنید", type="password", id="password", style="padding-left: 3rem;") }}
+                    <button class="password-toggle" type="button" id="passwordToggle">
+                        <i class="material-icons">visibility_off</i>
+                    </button>
+                </div>
+                {% if form.password.errors %}
+                    {% for error in form.password.errors %}
+                        <div class="error-message">{{ error }}</div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            <div class="remember-forgot">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="rememberMe">
+                    <label class="form-check-label" for="rememberMe">
+                        مرا به خاطر بسپار
+                    </label>
+                </div>
+                <a href="#" class="forgot-link">رمز عبور را فراموش کرده‌ام؟</a>
+            </div>
+            
+            <button type="submit" class="btn btn-primary" style="width: 100%;">
+                <i class="material-icons" style="font-size: 1rem; vertical-align: middle;">login</i>
+                {{ form.submit.label.text }}
+            </button>
+        </form>
+
+        <div class="divider">
+            <span>یا</span>
+        </div>
+
+        <div class="signup-link">
+            <p style="margin-bottom: 0.5rem; color: var(--text-secondary);">حساب کاربری ندارید؟</p>
+            <a href="{{ url_for('auth.show_auth_page') }}">
+                <i class="material-icons" style="font-size: 1rem; vertical-align: middle;">person_add</i>
+                ثبت‌نام کنید
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const password = document.getElementById('password');
@@ -168,33 +220,44 @@
         const loginForm = document.getElementById('loginForm');
         
         // Toggle password visibility
-        passwordToggle.addEventListener('click', function() {
-            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-            password.setAttribute('type', type);
-            
-            const icon = this.querySelector('i');
-            icon.classList.toggle('bi-eye');
-            icon.classList.toggle('bi-eye-slash');
-        });
+        if (passwordToggle && password) {
+            passwordToggle.addEventListener('click', function() {
+                const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+                password.setAttribute('type', type);
+                
+                const icon = this.querySelector('i');
+                if (type === 'password') {
+                    icon.textContent = 'visibility_off';
+                } else {
+                    icon.textContent = 'visibility';
+                }
+            });
+        }
 
         // Simple client-side validation (UX improvement)
-        loginForm.addEventListener('submit', function(event) {
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
+        if (loginForm) {
+            loginForm.addEventListener('submit', function(event) {
+                const username = document.getElementById('username').value;
+                const passwordValue = password.value;
 
-            if (!username || !password) {
-                event.preventDefault();
-                
-                // Create error alert if it doesn't exist
-                if (!document.querySelector('.validation-error')) {
-                    const errorDiv = document.createElement('div');
-                    errorDiv.className = 'alert alert-custom alert-custom-error alert-dismissible fade show validation-error';
-                    errorDiv.innerHTML = 'لطفاً نام کاربری و رمز عبور را وارد کنید. <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
-                    loginForm.parentNode.insertBefore(errorDiv, loginForm);
+                if (!username || !passwordValue) {
+                    event.preventDefault();
+                    
+                    // Create error alert if it doesn't exist
+                    if (!document.querySelector('.validation-error')) {
+                        const errorDiv = document.createElement('div');
+                        errorDiv.className = 'flash-message error validation-error';
+                        errorDiv.innerHTML = '<i class="material-icons">error</i> لطفاً نام کاربری و رمز عبور را وارد کنید.';
+                        loginForm.parentNode.insertBefore(errorDiv, loginForm);
+                        
+                        // Remove after 5 seconds
+                        setTimeout(() => {
+                            errorDiv.remove();
+                        }, 5000);
+                    }
                 }
-            }
-        });
+            });
+        }
     });
 </script>
-{% endblock %}
 {% endblock %}

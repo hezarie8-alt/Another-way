@@ -3,7 +3,7 @@ User Routes
 مسیرهای مربوط به کاربران
 """
 
-from flask import Blueprint, render_template, request, redirect, url_for, session, flash
+from flask import Blueprint, render_template, request, redirect, url_for, session, flash, jsonify
 from werkzeug.security import check_password_hash, generate_password_hash
 from app.models import User
 from app.forms import UpdateProfileForm, UpdatePasswordForm, DeleteAccountForm
@@ -86,3 +86,17 @@ def delete_account():
     
     flash('حساب کاربری حذف شد.', 'info')
     return redirect(url_for('auth.show_auth_page'))
+
+
+@user_bp.route('/api/toggle_theme', methods=['POST'])
+@login_required
+def toggle_theme():
+    """تغییر تم (Dark/Light Mode)"""
+    user_id = session['current_user_id']
+    user = User.query.get_or_404(user_id)
+    
+    # تغییر تم
+    user.theme = 'dark' if user.theme == 'light' else 'light'
+    db.session.commit()
+    
+    return jsonify({'success': True, 'theme': user.theme})
